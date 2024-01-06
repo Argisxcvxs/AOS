@@ -22,9 +22,28 @@ connection = mysql.connector.connect(
 
 # Definir la variable tables
 table_estudiantes = tables["estudiantes"]
+table_profesores = tables["profesores"]
+table_administrativos = tables["administrativos"]
 # Acceder a la tabla de estudiantes
+import streamlit as st
 
-def val_user_exist(documento):
+def seleccion_de_ocupacion():
+    st.title("Seleccionar Ocupación")
+    st.write("Por favor, selecciona tu ocupación:")
+
+    if st.button("Estudiante"):
+        st.write("Eres estudiante")
+        val_user_exist()
+    elif st.button("Profesor"):
+        st.write("Eres profesor")
+    elif st.button("Administrativo"):
+        st.write("Eres administrativo")
+    else:
+        st.write("Por favor, selecciona una ocupación")
+
+seleccion_de_ocupacion()
+
+def val_user_exist(documento, tables):
     """
     Valida si un usuario existe e
     n la base de datos.
@@ -35,7 +54,7 @@ def val_user_exist(documento):
     Returns:
         bool: True si el usuario existe, False si no existe.
     """
-    query = query_val_user.format(table_estudiantes=table_estudiantes, documento=documento)
+    query = query_val_user.format(tables=tables, documento=documento,)
     cursor = connection.cursor(dictionary=True)
     cursor.execute(query)
     resultado = cursor.fetchone()
